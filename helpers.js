@@ -1,6 +1,9 @@
+'use strict';
+
 var request = require('request');
 var crypto = require('crypto');
 
+var winston = require('./logger');
 var settings = require('./settings');
 var gph = require('./graphite');
 var ig = require('./instagram');
@@ -15,8 +18,8 @@ exports.isValidRequest = function isValidRequest(request) {
   hmac.update(request.rawBody);
   var providedSignature = request.headers['x-hub-signature'];
   var calculatedSignature = hmac.digest(encoding='hex');
-  return providedSignature != calculatedSignature || !request.body
-}
+  return providedSignature != calculatedSignature || !request.body;
+};
 
 /**
  * Retrieve the last igLimit (preset) photos tagged tagName, then
@@ -28,18 +31,17 @@ exports.queuePhotos = function queuePhotos(data) {
   var num_updates = settings.igLimit;
   var tagName = data.params.tagName;
   var update_url = settings.apiHost + "tags/" + tagName +
-   "/media/recent?client_id=" + settings.CLIENT_ID + "&count=" + num_updates
-  var data;
+   "/media/recent?client_id=" + settings.CLIENT_ID + "&count=" + num_updates;
   request.get({url: update_url},
    function(err, res, body) {
      if (!err && res.statusCode == 200) {
        instagram = JSON.parse(body);
        postInstagramData(instagram.data);
      } else {
-       console.log("Error retrieving latest photos");
+       winston.error("Error retrieving latest photos: " + err);
      }
-   })
-}
+   });
+};
 
 /**
  * POST the photos we have retrieved using Graphite
@@ -51,21 +53,21 @@ function postInstagramData(data) {
 
   var headers, content;
 
-  photoUrls = getUrlsFrom(data)
+  photoUrls = getUrlsFrom(data);
 
   headers = {
     'Authorization': 'Bearer ' + settings.GPH.AUTH_TOKEN,
-  }
+  };
 
   for (var i = 0; i < photoUrls.length; i++) {
     content = {
       'storage_url': photoUrls[i],
-    }
+    };
     attPromise = new Promise(function(resolve, reject) {
-      gph.postAttachment(headers, content, resolve, reject)
+      gph.postAttachment(headers, content, resolve, reject);
     });
     attPromise
-    .then(gph.postOrder, function(err){ console.log(err); });
+    .then(gph.postOrder, function(err){ winston.warn(err); });
   }
 }
 
@@ -79,8 +81,8 @@ function getUrlsFrom(data) {
   var results = [];
   var img, url;
   for (var i = 0; i<data.length; i++) {
-    img = data[i]
-    url = img.images.standard_resolution.url
+    img = data[i];
+    url = img.images.standard_resolution.url;
     results.push(url);
   }
   return results;

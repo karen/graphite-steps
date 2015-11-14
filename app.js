@@ -1,7 +1,11 @@
+'use strict';
+
 var express = require('express');
 var http = require('http');
 var url = require('url');
 
+var logger = require('./logger');
+var winston = logger.winston;
 var settings = require('./settings');
 var helpers = require('./helpers');
 var ig = require('./instagram');
@@ -27,16 +31,18 @@ app.post('/callbacks/tag/:tagName', function(req, response) {
     response.status(200).json({success: true});
     helpers.queuePhotos(req);
   }
-})
+});
 
 if (settings.appSub) {
+  winston.verbose('Starting up app...');
   var listSub = new Promise(function(resolve, reject) {
-    ig.subscribedTo(settings.igTag, resolve, reject)
+    ig.subscribedTo(settings.igTag, resolve, reject);
   });
    listSub
-   .then(ig.subscribeToTag, function(err){ console.log(err); });
+   .then(ig.subscribeToTag, function(reason){ winston.info(reason); });
  } else {
-   //ig.unsubAll();
+   winston.info('Unsubscribing from all tags!');
+   ig.unsubAll();
  }
 
 app.listen(settings.port);

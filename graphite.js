@@ -1,5 +1,8 @@
+'use strict';
+
 var request = require('request');
 
+var winston = require('./logger');
 var settings = require('./settings');
 
 exports.postAttachment = function (headers, content, resolve, reject) {
@@ -11,7 +14,9 @@ exports.postAttachment = function (headers, content, resolve, reject) {
     body: content,
     json: true,
     method: 'POST'
-  }
+  };
+
+  var attId;
 
   setTimeout(function() {
     request(options, function (err, res, body) {
@@ -23,15 +28,15 @@ exports.postAttachment = function (headers, content, resolve, reject) {
         reject(reason);
       }
     });
-  }, 1000)
-}
+  }, 1000);
+};
 
 exports.postOrder = function (attId) {
   var headers, content, options;
 
   headers = {
     'Authorization': 'Bearer ' + settings.GPH.AUTH_TOKEN,
-  }
+  };
 
   content = {
     'customer_id': settings.GPH.CUSTOMER_ID,
@@ -39,7 +44,7 @@ exports.postOrder = function (attId) {
     'order_items': [{
       'combination_id': settings.GPH.COMBINATION_ID,
       'attachment_ids': attId }]
-  }
+  };
 
   options = {
     headers: headers,
@@ -47,21 +52,21 @@ exports.postOrder = function (attId) {
     body: content,
     json: true,
     method: 'POST'
-  }
+  };
 
   setTimeout(function() {
     request(options, postOrderCallback);
   }, 1000);
 
-}
+};
 
 function postOrderCallback(err, res, body) {
   var code = res.statusCode;
 
   if (!err && res.statusCode === 201){
-    console.log('Posted order to Graphite', code, body);
+    winston.info('Posted order to Graphite', code, body);
   }
   else {
-    console.log('Error posting order to Graphite', code, err);
+    winston.error(code + ': Error posting order to Graphite - ' + err);
   }
 }

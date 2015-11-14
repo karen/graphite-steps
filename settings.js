@@ -1,10 +1,12 @@
+'use strict';
+
 var express = require('express');
 
 var app = express();
 
 exports.app = app;
 
-exports.host = '20f720cf.ngrok.io'
+exports.host = 'HOST';
 exports.port = process.env.IG_APP_PORT || 3000;
 exports.CLIENT_ID = process.env.IG_CLIENT_ID || 'CLIENT-ID';
 exports.CLIENT_SECRET = process.env.IG_CLIENT_SECRET || 'CLIENT-SECRET';
