@@ -13,10 +13,15 @@ exports.apiHost = process.env.IG_API_HOST || 'https://api.instagram.com/v1/';
 exports.apiPort = process.env.IG_API_PORT || null;
 exports.basePath = process.env.IG_BASE_PATH || '';
 
+exports.igLimit = 1;
+exports.igTag = 'graphite-steps';
+
+exports.appSub = true;
+
 exports.GPH = {
   POST_URL: 'http://jxstage.kiangtengl.me/api/v1/',
-  CUSTOMER_ID: process.env.GPH_CUST_ID || 'CUST-ID',
-  SHIPPING_ADDRESS_ID: process.env.GPH_SHIP_ID || 'SHIP-ID',
-  ITEM_ID: 'ITEM-ID',
-  SIZE_ID: 'SIZE-ID'
+  AUTH_TOKEN: 'YOUR_AUTH_TOKEN',
+  CUSTOMER_ID: 'CUSTOMER_ID',
+  SHIPPING_ADDRESS_ID: 'ADDRESS_ID',
+  COMBINATION_ID: '1'
 }
