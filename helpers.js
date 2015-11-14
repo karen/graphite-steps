@@ -3,7 +3,8 @@
 var request = require('request');
 var crypto = require('crypto');
 
-var winston = require('./logger');
+var logger = require('./logger');
+var winston = logger.winston;
 var settings = require('./settings');
 var gph = require('./graphite');
 var ig = require('./instagram');

@@ -2,7 +2,8 @@
 
 var request = require('request');
 
-var winston = require('./logger');
+var logger = require('./logger');
+var winston = logger.winston;
 var settings = require('./settings');
 
 exports.subscribedTo = function(tagName, resolve, reject) {
