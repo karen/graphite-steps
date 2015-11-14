@@ -18,6 +18,7 @@
   "homepage": "https://github.com/karenang/graphite-steps#readme",
   "dependencies": {
     "express": "^4.13.3",
-    "request": "^2.65.0"
+    "request": "^2.65.0",
+    "winston": "^2.1.0"
   }
 }
