@@ -65,8 +65,7 @@ function postInstagramData(data) {
       gph.postAttachment(headers, content, resolve, reject)
     });
     attPromise
-    .then(gph.postOrder)
-    .catch(rejectHandler)
+    .then(gph.postOrder, function(err){ console.log(err); });
   }
 }
 
@@ -85,8 +84,4 @@ function getUrlsFrom(data) {
     results.push(url);
   }
   return results;
-}
-
-function rejectHandler(reason) {
-  console.log(reason)
 }
