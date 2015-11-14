@@ -1,6 +1,7 @@
 # graphite-steps
 Built for STePS, this app will track the tag #graphite-steps
-and post orders to the Graphite API for instant printing.
+and post orders to the [Graphite API](http://docs.kiangtengl.apiary.io/#) 
+for instant printing.
 
 ## Development Environment
 - Node
