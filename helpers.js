@@ -27,7 +27,7 @@ exports.isValidRequest = function isValidRequest(request) {
 exports.queuePhotos = function queuePhotos(data) {
   var num_updates = settings.igLimit;
   var tagName = data.params.tagName;
-  var update_url = settings.apiHost + "tags/" + 'graphite' +
+  var update_url = settings.apiHost + "tags/" + tagName +
    "/media/recent?client_id=" + settings.CLIENT_ID + "&count=" + num_updates
   var data;
   request.get({url: update_url},
