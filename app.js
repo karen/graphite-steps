@@ -29,7 +29,14 @@ app.post('/callbacks/tag/:tagName', function(req, response) {
   }
 })
 
-// ig.subscribeToTag('graphite-steps');
-// ig.unsubAll();
+if (settings.appSub) {
+  var listSub = new Promise(function(resolve, reject) {
+    ig.subscribedTo(settings.igTag, resolve, reject)
+  });
+   listSub
+   .then(ig.subscribeToTag, function(err){ console.log(err); });
+ } else {
+   //ig.unsubAll();
+ }
 
 app.listen(settings.port);
