@@ -61,12 +61,12 @@ function postToGraphite(urls, type, att) {
       params = {
         customer_id: settings.GPH.CUSTOMER_ID,
         shipping_address_id: settings.GPH.SHIPPING_ADDRESS_ID,
-        order_items: [
+        order_items: [{
           item_id: settings.GPH.ITEM_ID,
           quantity: 1,
           size_id: settings.GPH.SIZE_ID,
           attachment_ids: att[i]
-        ]
+        }]
       }
       setTimeout(function() {
         request.post({url: settings.GPH.POST_URL + 'orders', form: params},
