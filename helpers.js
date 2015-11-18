@@ -36,7 +36,7 @@ exports.queuePhotos = function queuePhotos(data) {
   request.get({url: update_url},
    function(err, res, body) {
      if (!err && res.statusCode == 200) {
-       instagram = JSON.parse(body);
+       var instagram = JSON.parse(body);
        postInstagramData(instagram.data);
      } else {
        winston.error("Error retrieving latest photos: " + err);
@@ -50,11 +50,13 @@ exports.queuePhotos = function queuePhotos(data) {
  */
 function postInstagramData(data) {
   var photoUrls = [];
-  var attPromise;
+  var usernames = [];
+  var username;
 
   var headers, content;
 
   photoUrls = getUrlsFrom(data);
+  usernames = getUsernamesFrom(data);
 
   headers = {
     'Authorization': 'Bearer ' + settings.GPH.AUTH_TOKEN,
@@ -62,19 +64,20 @@ function postInstagramData(data) {
 
   for (var i = 0; i < photoUrls.length; i++) {
     content = {
-      'storage_url': photoUrls[i],
+      'storage_url': photoUrls[i]
     };
-    attPromise = new Promise(function(resolve, reject) {
-      gph.postAttachment(headers, content, resolve, reject);
-    });
-    attPromise
+
+    username = usernames[i];
+
+    gph.postAttachment(headers, content, username)
+    .then(gph.postCustomer)
     .then(gph.postOrder, function(err){ winston.warn(err); });
   }
 }
 
 /**
  * Extract all the urls from the Instagram data
- * @param   data Parsed Instagram datal an array of photos
+ * @param   data Parsed Instagram data; an array of photos
  * @return       An array of urls which can be POSTed to JX Print
  */
 
@@ -85,6 +88,17 @@ function getUrlsFrom(data) {
     img = data[i];
     url = img.images.standard_resolution.url;
     results.push(url);
+  }
+  return results;
+}
+
+function getUsernamesFrom(data) {
+  var results = [];
+  var img, username;
+  for (var i = 0; i<data.length; i++) {
+    img = data[i];
+    username = img.user.username;
+    results.push(username);
   }
   return results;
 }
