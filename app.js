@@ -17,8 +17,8 @@ app.get('/', function(req, res) {
 });
 
 app.get('/callbacks/tag/:tagName', function(req, response) {
-  if (req.params("hub.verify_token") == "tag-sub") {
-    response.send(req.params("hub.challenge"));
+  if (req.query["hub.verify_token"] == "tag-sub") {
+    response.send(req.query["hub.challenge"]);
   } else {
     response.status(500).json({error: 'Incorrect verify_token'});
   }

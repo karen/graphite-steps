@@ -6,7 +6,7 @@ var app = express();
 
 exports.app = app;
 
-exports.host = 'HOST';
+exports.host = 'ec2-54-169-208-170.ap-southeast-1.compute.amazonaws.com';
 exports.port = process.env.IG_APP_PORT || 3000;
 exports.CLIENT_ID = process.env.IG_CLIENT_ID || 'CLIENT-ID';
 exports.CLIENT_SECRET = process.env.IG_CLIENT_SECRET || 'CLIENT-SECRET';
@@ -16,7 +16,7 @@ exports.apiPort = process.env.IG_API_PORT || null;
 exports.basePath = process.env.IG_BASE_PATH || '';
 
 exports.igLimit = 1;
-exports.igTag = 'graphite-steps';
+exports.igTag = 'graphitesteps';
 
 exports.appSub = true;
 

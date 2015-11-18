@@ -48,7 +48,7 @@ exports.subscribeToTag = function(tagName) {
         winston.info("Subscribed to tag: ", tagName);
       }
       else {
-        winston.warn("Failed to subscribe: ", response.statusCode, err);
+        winston.warn("Failed to subscribe: ", response.statusCode, err, body);
       }
     }
   );
