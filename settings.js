@@ -21,9 +21,15 @@ exports.igTag = 'graphite-steps';
 exports.appSub = true;
 
 exports.GPH = {
+  DASHBOARD: 'http://jxstage.kiangtengl.me/admin/orders/',
   POST_URL: 'http://jxstage.kiangtengl.me/api/v1/',
   AUTH_TOKEN: 'YOUR_AUTH_TOKEN',
-  CUSTOMER_ID: 'CUSTOMER_ID',
-  SHIPPING_ADDRESS_ID: 'ADDRESS_ID',
+  SHIPPING_ADDRESS: {
+    address_line_1: 'Kent Ridge',
+    city: 'Singapore',
+    state: 'Singapore',
+    zip: '123456',
+    country: 'Singapore'
+  },
   COMBINATION_ID: '1'
-}
+};
