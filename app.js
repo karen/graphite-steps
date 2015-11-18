@@ -25,7 +25,7 @@ app.get('/callbacks/tag/:tagName', function(req, response) {
 });
 
 app.post('/callbacks/tag/:tagName', function(req, response) {
-  if (!helpers.isValidRequest(request)) {
+  if (!helpers.isValidRequest(req)) {
     response.status(500).json({error: 'Signature does not match'});
   } else {
     response.status(200).json({success: true});
